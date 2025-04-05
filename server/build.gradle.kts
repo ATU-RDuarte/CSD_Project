@@ -6,6 +6,7 @@ plugins {
 
 group = "org.atu"
 version = "1.0.0"
+var ktorVersion = "3.1.2"
 application {
     mainClass.set("org.atu.ApplicationKt")
     applicationDefaultJvmArgs = listOf("-Dio.ktor.development=${extra["io.ktor.development"] ?: "false"}")
@@ -16,6 +17,8 @@ dependencies {
     implementation(libs.logback)
     implementation(libs.ktor.server.core)
     implementation(libs.ktor.server.netty)
-    testImplementation(libs.ktor.server.tests)
+    implementation("io.ktor:ktor-server-auth:$ktorVersion")
+    implementation("io.ktor:ktor-server-auth-jwt:$ktorVersion")
+    testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
     testImplementation(libs.kotlin.test.junit)
 }
