@@ -1,0 +1,33 @@
+@startuml
+
+skinparam actorStyle awesome
+:Main User: as User
+:Car: as Car
+
+User -up-> (Register/Login)
+Car -up-> (Register)
+Server -> (Handle Registration)
+(Handle Registration) --> (Register)
+(Handle Registration) --> (Register/Login)
+Server --> (Generate Key Pair)
+(Generate Key Pair) --> (Receive Key)
+Car --> (Receive Key)
+
+Car --> (Update Status)
+Server --> (Receive Status Update)
+(Update Status) --> (Receive Status Update)
+
+User --> (Request Session)
+Server --> (Generate Token)
+(Generate Token) --> (Receive Token)
+User --> (Receive Token)
+
+User --> (Start Session)
+(Start Session) --> (Accept Session)
+Car --> (Accept Session)
+User --> (End Session)
+Car --> (Handle End Session)
+(Start Session) --> (Handle End Session)
+
+
+@enduml

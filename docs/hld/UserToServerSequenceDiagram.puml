@@ -1,0 +1,24 @@
+@startuml
+
+User -> Server: Register/Login
+Server --> User: Authentication Response
+
+Server -> User: Update Car Data Information
+User -> User: Select Available Car
+
+Server -> User: Request Car Session
+Server -> Server: Generate JWT Self Signed With Car Private Key
+Server --> User: Return JWT
+
+alt Car Session is over
+User -> Server : Notify End Session
+User -> User : Delete Token
+end
+
+alt if User Logs Out
+User -> Server : End Current Session
+Server --> User : Acknowledge End Session
+User -> User : Logs Out
+end
+
+@enduml

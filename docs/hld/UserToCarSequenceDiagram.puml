@@ -1,0 +1,35 @@
+@startuml
+
+User -> Car: Requests Session With JWT
+Car -> Car: Validates JWT Signature Against Public Key
+alt Signature Is Validates
+    Car -> User : Initialize Session With User
+else
+    Car -> User : Return Error Back To User
+end
+
+group Car Session With User
+   User -> Car : Request To Unlock Door
+   alt if Car Door Is Locked
+        Car -> Car : Unlock Door
+        Car -> User : Respond With Success
+   else
+        Car -> User : Respond With Error Message
+   end
+  User -> Car : Request To Lock Door
+  alt if Car Door Is Unlocked
+       Car -> Car : Lock Door
+       Car -> User : Respond With Success
+  else
+       Car -> User : Respond With Error Message
+  end
+
+  alt if User Request End Session
+    User -> Car : Request End Session
+    Car -> Car : Generate Report
+    Car -> User : Send Report
+    Car -> USer: End Session
+  end
+end
+
+@enduml
