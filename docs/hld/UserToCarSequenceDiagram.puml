@@ -28,7 +28,7 @@ group Car Session With User
     User -> Car : Request End Session
     Car -> Car : Generate Report
     Car -> User : Send Report
-    Car -> USer: End Session
+    Car -> User: End Session
   end
 end
 
