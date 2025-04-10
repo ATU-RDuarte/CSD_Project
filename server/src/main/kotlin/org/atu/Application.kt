@@ -9,8 +9,6 @@ import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import java.security.interfaces.RSAKey
-import java.security.interfaces.RSAPrivateKey
 
 
 fun main() {
@@ -31,10 +29,12 @@ fun Application.module() {
                 return@post
             }
             try {
-                carMap[carId] = KeyGeneratorWrapper.generateKeyPair()
+                carMap[carId] = RsaKeyHelper.generateRsaKeyPair()
+                val jwk =
+                    carMap[carId]?.let { RsaKeyHelper.convertRsaKeyToJwkString(it.publicKey) }
                 call.respondText(
                     contentType = ContentType.Application.Json,
-                    text = "{\"public_key\":\"${carMap[carId]?.publicKey}\"}"
+                    text = "{\"public_key\":\"$jwk\"}"
                 )
             } catch (ex: IllegalArgumentException) {
                 call.respond(HttpStatusCode.BadRequest)
