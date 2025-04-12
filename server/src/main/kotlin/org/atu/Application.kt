@@ -9,6 +9,10 @@ import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import kotlinx.serialization.json.Json
+import java.security.interfaces.RSAPrivateKey
+import java.security.interfaces.RSAPublicKey
+import java.util.Date
 import java.util.UUID
 
 
@@ -31,11 +35,9 @@ fun Application.module() {
             }
             try {
                 carMap[carId] = RsaKeyHelper.generateRsaKeyPair()
-                val pem =
-                    carMap[carId]?.publicKey
                 call.respondText(
                     contentType = ContentType.Text.Plain,
-                    text = "{\"public_key\":\"$pem\"}"
+                    text = carMap[carId]?.let { RsaKeyHelper.publicKeyPemFormat(it.publicKey) }.toString()
                 )
             } catch (ex: IllegalArgumentException) {
                 call.respond(HttpStatusCode.BadRequest)
@@ -54,8 +56,8 @@ fun Application.module() {
             try {
                 val carKeys = carMap[carId]
                 val jwt = JWT.create()
-                    .withClaim("jti", UUID.fromString(carId).toString())
-                    .sign(Algorithm.RSA256(carKeys?.publicKey, carKeys?.privateKey))
+                    .withExpiresAt(Date(System.currentTimeMillis() + 6000000))
+                    .sign(Algorithm.RSA256((carKeys?.publicKey as RSAPublicKey), (carKeys.privateKey as RSAPrivateKey)))
                 call.respondText(
                     contentType = ContentType.Application.Json,
                     text = jwt

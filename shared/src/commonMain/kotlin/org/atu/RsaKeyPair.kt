@@ -1,6 +1,6 @@
 package org.atu
 
-import java.security.interfaces.RSAPrivateKey
-import java.security.interfaces.RSAPublicKey
+import java.security.PrivateKey
+import java.security.PublicKey
 
-data class RsaKeyPair(val privateKey: RSAPrivateKey, val publicKey: RSAPublicKey)
+data class RsaKeyPair(val privateKey: PrivateKey, val publicKey: PublicKey)
