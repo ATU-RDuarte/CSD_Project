@@ -29,5 +29,6 @@ dependencyResolutionManagement {
 }
 
 include(":composeApp")
+include(":car_demo_app")
 include(":server")
 include(":shared")
