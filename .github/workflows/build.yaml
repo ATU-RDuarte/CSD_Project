@@ -4,7 +4,8 @@ run-name: Running Build
 on:
   workflow_run:
     workflows: ['Lint']
-    types: [completed]
+    types:
+      - completed
 
 jobs:
   BuildClientAppAndroid:
