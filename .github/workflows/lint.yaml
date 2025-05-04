@@ -1,5 +1,5 @@
-name: Lint Project
-run-name: Running Build
+name: Lint
+run-name: Running Lint
 on:
   pull_request:
     branches:
