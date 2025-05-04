@@ -1,10 +1,11 @@
 package org.atu
 
+import java.security.KeyFactory
 import java.security.KeyPairGenerator
 import java.security.PublicKey
 import java.security.SecureRandom
 import java.security.interfaces.RSAPublicKey
-import java.util.UUID
+import java.security.spec.X509EncodedKeySpec
 import kotlin.io.encoding.*
 
 object RsaKeyHelper {
@@ -21,5 +22,17 @@ object RsaKeyHelper {
         val rsaPublicKey = key as RSAPublicKey
         return "-----BEGIN PUBLIC KEY-----" +
                             Base64.encode( rsaPublicKey.encoded) + "-----END PUBLIC KEY-----"
+    }
+
+    @OptIn(ExperimentalEncodingApi::class)
+    fun pemToRsaPublicKey(pem: String): RSAPublicKey {
+        val publicKeyB64 =
+            pem.removePrefix("-----BEGIN PUBLIC KEY-----")
+                .removeSuffix("-----END PUBLIC KEY-----")
+        val decoded: ByteArray = Base64.decode(publicKeyB64)
+        val spec =
+            X509EncodedKeySpec(decoded)
+        val kf = KeyFactory.getInstance("RSA")
+        return kf.generatePublic(spec) as RSAPublicKey
     }
 }

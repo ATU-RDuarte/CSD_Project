@@ -7,6 +7,7 @@ plugins {
 group = "org.atu"
 version = "1.0.0"
 var ktorVersion = "3.1.2"
+val kotlinVersion = "1.10.2"
 
 application {
     mainClass.set("org.atu.CarApplication")
@@ -20,4 +21,6 @@ dependencies {
     implementation("io.ktor:ktor-client-cio:$ktorVersion")
     implementation("io.ktor:ktor-client-logging:$ktorVersion")
     testImplementation(libs.kotlin.test.junit)
+    testImplementation("io.ktor:ktor-client-mock:$ktorVersion")
+    testImplementation(libs.kotlinx.coroutines.test)
 }

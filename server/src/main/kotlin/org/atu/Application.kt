@@ -9,11 +9,9 @@ import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kotlinx.serialization.json.Json
 import java.security.interfaces.RSAPrivateKey
 import java.security.interfaces.RSAPublicKey
 import java.util.Date
-import java.util.UUID
 
 
 fun main() {
@@ -28,33 +26,33 @@ fun Application.module() {
             call.respondText("Ktor: ${Greeting().greet()}")
         }
         post("/car/register") {
-            val carId = call.queryParameters["carId"]
-            if (carId == null) {
+            val vuid = call.queryParameters["vuid"]
+            if (vuid == null) {
                 call.respond(HttpStatusCode.BadRequest)
                 return@post
             }
             try {
-                carMap[carId] = RsaKeyHelper.generateRsaKeyPair()
+                carMap[vuid] = RsaKeyHelper.generateRsaKeyPair()
                 call.respondText(
                     contentType = ContentType.Text.Plain,
-                    text = carMap[carId]?.let { RsaKeyHelper.publicKeyPemFormat(it.publicKey) }.toString()
+                    text = carMap[vuid]?.let { RsaKeyHelper.publicKeyPemFormat(it.publicKey) }.toString()
                 )
             } catch (ex: IllegalArgumentException) {
                 call.respond(HttpStatusCode.BadRequest)
             }
         }
         get("/requestSession") {
-            val carId = call.queryParameters["carId"]
-            if (carId == null) {
+            val vuid = call.queryParameters["vuid"]
+            if (vuid == null) {
                 call.respond(HttpStatusCode.BadRequest)
                 return@get
             }
-            if (!carMap.containsKey(carId)) {
+            if (!carMap.containsKey(vuid)) {
                 call.respond(HttpStatusCode.BadRequest)
                 return@get
             }
             try {
-                val carKeys = carMap[carId]
+                val carKeys = carMap[vuid]
                 val jwt = JWT.create()
                     .withExpiresAt(Date(System.currentTimeMillis() + 6000000))
                     .sign(Algorithm.RSA256((carKeys?.publicKey as RSAPublicKey), (carKeys.privateKey as RSAPrivateKey)))

@@ -40,7 +40,7 @@ fun CarCard(car: Car) {
         Row(
             Modifier.fillMaxWidth().padding(10.dp), horizontalArrangement = Arrangement.SpaceBetween
         ){
-            Text("Id: ${car.carId}")
+            Text("Id: ${car.vuid}")
             Icon(
                 imageVector = batteryIconFromCarFuel.first,
                 contentDescription = "Fuel",
