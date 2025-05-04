@@ -7,9 +7,10 @@ import kotlin.uuid.Uuid
 fun carBuilder(
     vuid: String = Uuid.random().toString(),
     carAvailability: CarAvailability = CarAvailability.Available,
-    fuel: Float = 100f
-): Car = Car(
-    vuid,
-    carAvailability,
-    fuel
-)
+    fuel: Float = 100f,
+): Car =
+    Car(
+        vuid,
+        carAvailability,
+        fuel,
+    )

@@ -11,35 +11,37 @@ import io.ktor.client.request.post
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
-import kotlinx.coroutines.*
+import kotlinx.coroutines.runBlocking
 import java.security.interfaces.RSAPublicKey
 
 class CarClient(
-     httpClientEngine: HttpClientEngine = CIO.create(), private val carStatus: Car = carBuilder()
+    httpClientEngine: HttpClientEngine = CIO.create(),
+    private val carStatus: Car = carBuilder(),
 ) {
     private lateinit var currentPublicKey: RSAPublicKey
-    private val client: HttpClient = HttpClient(httpClientEngine)
-    {
-        expectSuccess = true
-        install(Logging) {
-            logger = Logger.DEFAULT
-            level = LogLevel.HEADERS
-            filter { request ->
-                request.url.host.contains("ktor.io")
+    private val client: HttpClient =
+        HttpClient(httpClientEngine) {
+            expectSuccess = true
+            install(Logging) {
+                logger = Logger.DEFAULT
+                level = LogLevel.HEADERS
+                filter { request ->
+                    request.url.host.contains("ktor.io")
+                }
+                sanitizeHeader { header -> header == HttpHeaders.Authorization }
             }
-            sanitizeHeader { header -> header == HttpHeaders.Authorization }
         }
-    }
 
     fun registerCar(): HttpStatusCode {
         return runBlocking {
-            val response = client.post(
-                "$SERVER_URL/car/register"
-            ) {
-                url {
-                    parameters.append("vuid", carStatus.vuid)
+            val response =
+                client.post(
+                    "$SERVER_URL/car/register",
+                ) {
+                    url {
+                        parameters.append("vuid", carStatus.vuid)
+                    }
                 }
-            }
             if (response.status != HttpStatusCode.OK) {
                 println("Failed to register car with error code ${response.status}")
                 return@runBlocking response.status

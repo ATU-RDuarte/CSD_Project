@@ -6,7 +6,8 @@ import java.security.PublicKey
 import java.security.SecureRandom
 import java.security.interfaces.RSAPublicKey
 import java.security.spec.X509EncodedKeySpec
-import kotlin.io.encoding.*
+import kotlin.io.encoding.Base64
+import kotlin.io.encoding.ExperimentalEncodingApi
 
 object RsaKeyHelper {
     fun generateRsaKeyPair(): RsaKeyPair {
@@ -17,11 +18,10 @@ object RsaKeyHelper {
     }
 
     @OptIn(ExperimentalEncodingApi::class)
-    fun publicKeyPemFormat(key: PublicKey) : String
-    {
+    fun publicKeyPemFormat(key: PublicKey): String {
         val rsaPublicKey = key as RSAPublicKey
         return "-----BEGIN PUBLIC KEY-----" +
-                            Base64.encode( rsaPublicKey.encoded) + "-----END PUBLIC KEY-----"
+            Base64.encode(rsaPublicKey.encoded) + "-----END PUBLIC KEY-----"
     }
 
     @OptIn(ExperimentalEncodingApi::class)
