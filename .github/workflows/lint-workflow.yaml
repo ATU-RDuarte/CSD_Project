@@ -1,0 +1,36 @@
+name: Lint Project
+run-name: Running Build
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  AndroidLintJob:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: gradle
+      - name: Running Lint
+        run: ./gradlew lint
+      - name: Archive lint report
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-lint-report
+          path: |
+            */**/lint-results-debug.html
+  KtLintJob:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: gradle
+      - name: Running Lint
+        run: ./gradlew ktlintCheck

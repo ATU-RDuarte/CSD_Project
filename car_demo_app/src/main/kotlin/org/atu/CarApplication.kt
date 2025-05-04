@@ -1,9 +1,8 @@
 package org.atu
 
-import kotlinx.coroutines.*
+import kotlinx.coroutines.runBlocking
 
-fun main()
-{
+fun main() {
     val client = CarClient()
     runBlocking {
         client.registerCar()
