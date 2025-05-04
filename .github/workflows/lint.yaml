@@ -1,9 +1,7 @@
 name: Lint
 run-name: Running Lint
 on:
-  pull_request:
-    branches:
-      - main
+  workflow_call:
 
 jobs:
   AndroidLintJob:
@@ -23,6 +21,7 @@ jobs:
           name: android-lint-report
           path: |
             */**/lint-results-debug.html
+
   KtLintJob:
     runs-on: ubuntu-latest
     steps:
