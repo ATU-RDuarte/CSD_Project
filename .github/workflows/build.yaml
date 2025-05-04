@@ -2,9 +2,9 @@ name: Build CSD Project
 run-name: Running Build
 
 on:
-  pull_request:
-    branches:
-      - main
+  workflow_run:
+    workflows: ['Lint']
+    types: [completed]
 
 jobs:
   BuildClientAppAndroid:
