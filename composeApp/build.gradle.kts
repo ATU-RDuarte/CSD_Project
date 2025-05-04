@@ -74,6 +74,7 @@ android {
 
 dependencies {
     debugImplementation(compose.uiTooling)
+    testImplementation(libs.kotlin.test.junit)
 }
 
 compose.desktop {
