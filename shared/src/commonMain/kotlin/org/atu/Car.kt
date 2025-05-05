@@ -1,3 +1,6 @@
 package org.atu
 
-data class Car(val vuid: String, var availability: CarAvailability, var fuel: Float)
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class Car(val vuid: String, var availability: CarAvailability, var fuel: Float, var price: Float)

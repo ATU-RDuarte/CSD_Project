@@ -1,12 +1,15 @@
-package org.atu
+package org.atu.ui
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -19,11 +22,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import org.atu.Car
+import org.atu.CarAvailability
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
+@OptIn(ExperimentalMaterialApi::class)
 @Preview
 @Composable
-fun CarCard(car: Car) {
+fun CarCard(car: Car, onCardClick: (String) -> Unit) {
     val batteryIconFromCarFuel: Pair<ImageVector, Color> =
         when (car.fuel) {
             in 0.0F..35F -> Pair(Icons.Outlined.Battery1Bar, Color.Red)
@@ -35,7 +41,8 @@ fun CarCard(car: Car) {
             Modifier
                 .fillMaxWidth()
                 .padding(10.dp)
-                .height(100.dp),
+                .height(100.dp)
+                .clickable(car.availability == CarAvailability.Available, onClick =  { onCardClick(car.vuid) }),
     ) {
         Column(Modifier.fillMaxWidth().padding(10.dp), horizontalAlignment = Alignment.End) {
             Row(
@@ -43,13 +50,18 @@ fun CarCard(car: Car) {
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 Text("Id: ${car.vuid}")
+            }
+            Row(
+                Modifier.fillMaxWidth().padding(10.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
                 Icon(
                     imageVector = batteryIconFromCarFuel.first,
                     contentDescription = "Fuel",
                     tint = batteryIconFromCarFuel.second,
                 )
+                Text("Availability: ${car.availability}")
             }
-            Text("Availability: ${car.availability}")
         }
     }
 }
