@@ -1,6 +1,7 @@
 package org.atu
 
 import io.ktor.http.HttpStatusCode
+import kotlinx.coroutines.runBlocking
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -9,7 +10,7 @@ class CarClientTest {
 
     @Test
     fun testCarRegisterHappyPath() {
-        val response = client.registerCar()
+        val response = runBlocking { client.registerCar() }
         assertEquals(response, HttpStatusCode.OK)
     }
 }
