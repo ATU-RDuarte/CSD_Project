@@ -24,4 +24,5 @@ dependencies {
     implementation("io.ktor:ktor-server-auth-jwt:$ktorVersion")
     testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
     testImplementation(libs.kotlin.test.junit)
+    implementation("io.ktor:ktor-server-sse:$ktorVersion")
 }
