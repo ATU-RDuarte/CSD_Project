@@ -20,7 +20,7 @@ object ClientMockHttpEngine {
         MockEngine { request ->
             when (request.method) {
                 HttpMethod.Get -> {
-                    if (request.url.fullPath.contains("/fetchAvailableCars")) {
+                    if (request.url.fullPath.contains("/fetchRegisteredCars")) {
                         respond(carListToJson(carMap.values.toMap().keys.toList()), HttpStatusCode.OK)
                     } else {
                         respond("", HttpStatusCode.BadRequest)

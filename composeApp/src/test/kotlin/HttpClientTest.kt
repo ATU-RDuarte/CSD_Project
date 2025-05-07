@@ -1,5 +1,6 @@
 import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.runBlocking
+import org.atu.SERVER_URL
 import org.atu.carBuilder
 import org.atu.http.AppClientHttpClient
 import kotlin.test.Test
@@ -12,7 +13,7 @@ import kotlin.test.assertEquals
  *
  */
 class HttpClientTest {
-    private val client = AppClientHttpClient(ClientMockHttpEngine.getHttpEngine())
+    private val client = AppClientHttpClient(SERVER_URL, ClientMockHttpEngine.getHttpEngine())
     private val testCar = carBuilder(vuid = "testVuid")
 
     /**
@@ -22,8 +23,7 @@ class HttpClientTest {
      *
      */
     @Test
-    fun testApplicationHttpClientFetchRegisteredCarsRequestHappyPath()
-    {
+    fun testApplicationHttpClientFetchRegisteredCarsRequestHappyPath() {
         ClientMockHttpEngine.addCar(testCar.vuid, testCar)
         val response = runBlocking { client.fetchForAvailableCars() }
         assertEquals(response[0], testCar)

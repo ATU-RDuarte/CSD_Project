@@ -11,7 +11,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            App()
+            val serverUrl = "http://10.0.2.2:8080"
+            App(serverUrl = serverUrl)
         }
     }
 }
@@ -19,5 +20,5 @@ class MainActivity : ComponentActivity() {
 @Preview
 @Composable
 fun AppAndroidPreview() {
-    App()
+    App("http://10.0.2.2:8080")
 }
