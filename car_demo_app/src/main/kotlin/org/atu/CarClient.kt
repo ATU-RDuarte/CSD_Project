@@ -10,11 +10,18 @@ import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.plugins.sse.SSE
 import io.ktor.client.plugins.sse.sse
 import io.ktor.client.request.post
+import io.ktor.client.request.setBody
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import java.security.interfaces.RSAPublicKey
 
+/**
+ * Http client for the car application
+ *
+ * This class handles http communication with the server
+ *
+ */
 class CarClient(
     httpClientEngine: HttpClientEngine = CIO.create(),
     private val carStatus: Car = carBuilder(),
@@ -46,6 +53,9 @@ class CarClient(
                     url {
                         parameters.append("vuid", carStatus.vuid)
                     }
+                    setBody(
+                        carJsonSerializer(carStatus),
+                    )
                 }
             println("Attempting to register car with vuid: ${carStatus.vuid}")
             if (response.status != HttpStatusCode.OK) {

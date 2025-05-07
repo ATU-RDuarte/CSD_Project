@@ -7,9 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.selection.selectable
 import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -26,7 +24,15 @@ import org.atu.Car
 import org.atu.CarAvailability
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-@OptIn(ExperimentalMaterialApi::class)
+/**
+ * Car Card class for UI module
+ *
+ * This class is a UI module that generates a card for a card list with car information
+ *
+ * @param car current car on the card
+ * @param onCardClick callback that runs on card click
+ *
+ */
 @Preview
 @Composable
 fun CarCard(car: Car, onCardClick: (String) -> Unit) {

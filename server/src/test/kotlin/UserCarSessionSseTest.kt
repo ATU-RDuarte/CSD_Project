@@ -2,8 +2,11 @@ import io.ktor.client.plugins.sse.SSE
 import io.ktor.client.plugins.sse.sse
 import io.ktor.client.request.get
 import io.ktor.client.request.post
+import io.ktor.client.request.setBody
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.testing.testApplication
+import org.atu.carBuilder
+import org.atu.carJsonSerializer
 import org.atu.module
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -16,7 +19,7 @@ import kotlin.test.assertTrue
  *
  */
 class UserCarSessionSseTest {
-    val vuid = "testVuid"
+    val testCar = carBuilder(vuid = "testVuid")
 
     /**
      * Test Session UserCarSessionRequest event happy path
@@ -38,12 +41,19 @@ class UserCarSessionSseTest {
                         showRetryEvents()
                     }
                 }
-            assertEquals(HttpStatusCode.OK, client.post("/car/register?vuid=$vuid").status)
-            assertEquals(HttpStatusCode.OK, client.get("/requestSession?vuid=$vuid").status)
+            assertEquals(
+                HttpStatusCode.OK,
+                client.post("/car/register?vuid=${testCar.vuid}") {
+                    setBody(
+                        carJsonSerializer(testCar),
+                    )
+                }.status,
+            )
+            assertEquals(HttpStatusCode.OK, client.get("/requestSession?vuid=${testCar.vuid}").status)
             try {
-                client.sse(urlString = "/userSessionRequest?vuid=$vuid") {
+                client.sse(urlString = "/userSessionRequest?vuid=${testCar.vuid}") {
                     incoming.collect { event ->
-                        event.data?.let { assertTrue(it.contains(vuid)) }
+                        event.data?.let { assertTrue(it.contains(testCar.vuid)) }
                     }
                 }
             } catch (e: Exception) {
@@ -72,12 +82,19 @@ class UserCarSessionSseTest {
                         showRetryEvents()
                     }
                 }
-            assertEquals(HttpStatusCode.OK, client.post("/car/register?vuid=$vuid").status)
-            assertEquals(HttpStatusCode.OK, client.get("/requestSession?vuid=$vuid").status)
+            assertEquals(
+                HttpStatusCode.OK,
+                client.post("/car/register?vuid=${testCar.vuid}") {
+                    setBody(
+                        carJsonSerializer(testCar),
+                    )
+                }.status,
+            )
+            assertEquals(HttpStatusCode.OK, client.get("/requestSession?vuid=${testCar.vuid}").status)
             try {
-                client.sse(urlString = "/userEndSessionRequest?vuid=$vuid") {
+                client.sse(urlString = "/userEndSessionRequest?vuid=${testCar.vuid}") {
                     incoming.collect { event ->
-                        event.data?.let { assertTrue(it.contains(vuid)) }
+                        event.data?.let { assertTrue(it.contains(testCar.vuid)) }
                     }
                 }
             } catch (e: Exception) {
