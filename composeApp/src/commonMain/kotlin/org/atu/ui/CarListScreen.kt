@@ -10,6 +10,15 @@ import androidx.compose.ui.Modifier
 import org.atu.Car
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
+/**
+ * Car List class for UI module
+ *
+ * This class is a UI module that lists all card lists
+ *
+ * @param carList current list of cars
+ * @param carCardOnClickAction callback that run on card click action
+ *
+ */
 @Preview
 @Composable
 fun CarListScreen(carList : List<Car>, carCardOnClickAction: (String) -> Unit){

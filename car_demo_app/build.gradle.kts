@@ -18,10 +18,10 @@ application {
 dependencies {
     implementation(projects.shared)
     implementation(libs.logback)
-    implementation("io.ktor:ktor-client-core:$ktorVersion")
-    implementation("io.ktor:ktor-client-cio:$ktorVersion")
-    implementation("io.ktor:ktor-client-logging:$ktorVersion")
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.cio)
+    implementation(libs.ktor.client.logging)
     testImplementation(libs.kotlin.test.junit)
-    testImplementation("io.ktor:ktor-client-mock:$ktorVersion")
+    testImplementation(libs.ktor.client.mock)
     testImplementation(libs.kotlinx.coroutines.test)
 }

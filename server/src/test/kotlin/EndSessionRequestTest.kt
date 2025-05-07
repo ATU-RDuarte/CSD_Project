@@ -1,7 +1,10 @@
 import io.ktor.client.request.get
 import io.ktor.client.request.post
+import io.ktor.client.request.setBody
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.testing.testApplication
+import org.atu.carBuilder
+import org.atu.carJsonSerializer
 import org.atu.module
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -13,7 +16,7 @@ import kotlin.test.assertEquals
  *
  */
 class EndSessionRequestTest {
-    val vuid = "testVuid"
+    private val testCar = carBuilder(vuid = "testVuid")
 
     /**
      * Test End Session Request happy path
@@ -24,16 +27,22 @@ class EndSessionRequestTest {
      */
     @Test
     fun testSessionRequestHappyPath() {
-        val vuid = "testVuid"
         testApplication {
             application {
                 module()
             }
-            assertEquals(HttpStatusCode.OK, client.post("/car/register?vuid=$vuid").status)
+            assertEquals(
+                HttpStatusCode.OK,
+                client.post("/car/register?vuid=${testCar.vuid}") {
+                    setBody(
+                        carJsonSerializer(testCar),
+                    )
+                }.status,
+            )
             val response =
                 client.get("/endSession") {
                     url {
-                        parameters.append("vuid", vuid)
+                        parameters.append("vuid", testCar.vuid)
                     }
                 }
             assertEquals(response.status, HttpStatusCode.OK)
@@ -77,7 +86,14 @@ class EndSessionRequestTest {
             application {
                 module()
             }
-            assertEquals(HttpStatusCode.OK, client.post("/car/register?vuid=$vuid").status)
+            assertEquals(
+                HttpStatusCode.OK,
+                client.post("/car/register?vuid=${testCar.vuid}") {
+                    setBody(
+                        carJsonSerializer(testCar),
+                    )
+                }.status,
+            )
             val response = client.get("/endSession")
             assertEquals(response.status, HttpStatusCode.BadRequest)
         }
@@ -92,16 +108,22 @@ class EndSessionRequestTest {
      */
     @Test
     fun testSessionRequestTestInvalidMethod() {
-        val vuid = "testVuid"
         testApplication {
             application {
                 module()
             }
-            assertEquals(HttpStatusCode.OK, client.post("/car/register?vuid=$vuid").status)
+            assertEquals(
+                HttpStatusCode.OK,
+                client.post("/car/register?vuid=${testCar.vuid}") {
+                    setBody(
+                        carJsonSerializer(testCar),
+                    )
+                }.status,
+            )
             val response =
                 client.post("/endSession") {
                     url {
-                        parameters.append("vuid", vuid)
+                        parameters.append("vuid", testCar.vuid)
                     }
                 }
             assertEquals(response.status, HttpStatusCode.MethodNotAllowed)

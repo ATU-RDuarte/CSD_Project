@@ -17,6 +17,16 @@ import androidx.compose.ui.unit.dp
 import org.atu.Car
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
+/**
+ * CarViewScree class for UI module
+ *
+ * This class is a UI that is routed on car card click and shows current car details
+ * and provides a button to request a session to the car
+ *
+ * @param car current selected car
+ * @param goBackAction callback to run on back button click action
+ *
+ */
 @Preview
 @Composable
 fun CarViewScreen(car: Car, goBackAction: () -> Unit) {

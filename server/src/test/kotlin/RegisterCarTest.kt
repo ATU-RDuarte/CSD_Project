@@ -1,8 +1,11 @@
 import io.ktor.client.request.get
 import io.ktor.client.request.post
+import io.ktor.client.request.setBody
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.testing.testApplication
+import org.atu.carBuilder
+import org.atu.carJsonSerializer
 import org.atu.module
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -15,6 +18,8 @@ import kotlin.test.assertTrue
  *
  */
 class RegisterCarTest {
+    private val testCar = carBuilder(vuid = "testVuid")
+
     /**
      * Test Car Registration happy path
      *
@@ -24,7 +29,6 @@ class RegisterCarTest {
      */
     @Test
     fun testCarRegisterHappyPath() {
-        val vuid = "testVuid"
         testApplication {
             application {
                 module()
@@ -32,8 +36,9 @@ class RegisterCarTest {
             val response =
                 client.post("/car/register") {
                     url {
-                        parameters.append("vuid", vuid)
+                        parameters.append("vuid", testCar.vuid)
                     }
+                    setBody(carJsonSerializer(testCar))
                 }
             assertEquals(response.status, HttpStatusCode.OK)
             assertTrue(response.call.response.bodyAsText().contains(("-----BEGIN PUBLIC KEY-----")))
@@ -68,7 +73,6 @@ class RegisterCarTest {
      */
     @Test
     fun testCarRegisterInvalidMethod() {
-        val vuid = "testVuid"
         testApplication {
             application {
                 module()
@@ -76,8 +80,9 @@ class RegisterCarTest {
             val response =
                 client.get("/car/register") {
                     url {
-                        parameters.append("vuid", vuid)
+                        parameters.append("vuid", testCar.vuid)
                     }
+                    setBody(carJsonSerializer(testCar))
                 }
             assertEquals(response.status, HttpStatusCode.MethodNotAllowed)
         }

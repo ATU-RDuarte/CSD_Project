@@ -38,6 +38,11 @@ kotlin {
             implementation(projects.shared)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.navigation.compose)
+
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.cio)
+            implementation(libs.ktor.client.logging)
+
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
@@ -76,6 +81,7 @@ android {
 dependencies {
     debugImplementation(compose.uiTooling)
     testImplementation(libs.kotlin.test.junit)
+    testImplementation(libs.ktor.client.mock)
 }
 
 compose.desktop {
