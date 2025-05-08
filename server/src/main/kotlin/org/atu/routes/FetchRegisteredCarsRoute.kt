@@ -9,6 +9,7 @@ import io.ktor.server.routing.get
 import org.atu.Car
 import org.atu.RsaKeyPair
 import org.atu.carJsonSerializer
+import java.util.concurrent.ConcurrentHashMap
 
 /**
  * Http route for client to request for data from registered cars
@@ -18,7 +19,7 @@ import org.atu.carJsonSerializer
  * @param carMap internal state of registered cars
  *
  */
-fun Routing.fetchRegisteredCarsRoute(carMap: MutableMap<String, Pair<Car, RsaKeyPair>>) {
+fun Routing.fetchRegisteredCarsRoute(carMap: ConcurrentHashMap<String, Pair<Car, RsaKeyPair>>) {
     get("/fetchRegisteredCars") {
         try {
             // TODO() add as a call back on car session requested
