@@ -38,6 +38,7 @@ kotlin {
             implementation(projects.shared)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.navigation.compose)
+            implementation(libs.androidx.lifecycle.viewmodel)
 
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.cio)
@@ -47,6 +48,9 @@ kotlin {
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
+        }
+        androidMain.dependencies {
+            implementation(libs.ktor.client.okhttp)
         }
     }
 }

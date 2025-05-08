@@ -2,7 +2,6 @@ package org.atu.http
 
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
-import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.logging.DEFAULT
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
@@ -12,7 +11,6 @@ import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import org.atu.Car
-import org.atu.SERVER_URL
 import org.atu.jsonCarParser
 
 /**
@@ -20,8 +18,11 @@ import org.atu.jsonCarParser
  *
  * This class handles http communication with the server
  *
+ * @param serverUrl server url (differs for android client)
+ * @param httpClientEngine http client engine dependency injection
+ *
  */
-class AppClientHttpClient(httpClientEngine: HttpClientEngine = CIO.create()) {
+class AppClientHttpClient(private val serverUrl: String, httpClientEngine: HttpClientEngine) {
     private val client: HttpClient =
         HttpClient(httpClientEngine) {
             expectSuccess = true
@@ -34,18 +35,18 @@ class AppClientHttpClient(httpClientEngine: HttpClientEngine = CIO.create()) {
                 sanitizeHeader { header -> header == HttpHeaders.Authorization }
             }
         }
+
     suspend fun fetchForAvailableCars(): List<Car> {
         try {
-            val response = client.get("$SERVER_URL/fetchAvailableCars")
+            val response = client.get("$serverUrl/fetchRegisteredCars")
             println("Requested available cars to server")
-            if(response.status != HttpStatusCode.OK)
-            {
+            if (response.status != HttpStatusCode.OK) {
                 println("Request failed with error ${response.status}")
                 return listOf()
             }
             val carListString = response.bodyAsText().drop(1).dropLast(1)
             val carList = mutableListOf<Car>()
-            carListString.split("},").forEach{car -> carList.add(jsonCarParser(car))}
+            carListString.split("},").forEach { car -> carList.add(jsonCarParser(car)) }
             return carList
         } catch (e: Exception) {
             println("Caught exception ${e.message}")

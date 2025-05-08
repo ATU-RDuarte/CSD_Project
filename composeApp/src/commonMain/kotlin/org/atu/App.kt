@@ -9,10 +9,12 @@ import org.atu.ui.ClientApp
  *
  * This class is the entry point for the client app
  *
+ * @param serverUrl server url (differs for android client)
+ *
  */
 @Composable
-fun App() {
+fun App(serverUrl: String = SERVER_URL) {
     MaterialTheme {
-        ClientApp()
+        ClientApp(serverUrl)
     }
 }

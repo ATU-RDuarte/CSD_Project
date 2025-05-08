@@ -11,7 +11,7 @@ var ktorVersion = "3.1.2"
 val kotlinVersion = "1.10.2"
 
 application {
-    mainClass.set("org.atu.CarApplication")
+    mainClass.set("org.atu.CarApplicationKt")
     applicationDefaultJvmArgs = listOf("-Dio.ktor.development=${extra["io.ktor.development"] ?: "false"}")
 }
 

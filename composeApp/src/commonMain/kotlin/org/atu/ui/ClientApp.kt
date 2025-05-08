@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -12,8 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
 import org.atu.Car
-import org.atu.CarAvailability
-import org.atu.carBuilder
+import org.atu.viewModel.ClientApplicationViewModel
 
 /**
  * Data class used for routing to the car list
@@ -23,6 +24,7 @@ import org.atu.carBuilder
  */
 @Serializable
 object CarList
+
 /**
  * Data class used for routing to car view
  *
@@ -43,15 +45,12 @@ data class CarView(val vuid: String)
  *
  */
 @Composable
-fun ClientApp(navController: NavHostController = rememberNavController()){
+fun ClientApp(serverUrl: String, navController: NavHostController = rememberNavController()) {
     //TODO: Get cars from server's database
-    val carList = listOf(
-        carBuilder(),
-        carBuilder(carAvailability = CarAvailability.Unavailable),
-        carBuilder(fuel = 85.0F, carAvailability = CarAvailability.Unavailable),
-    )
-    Scaffold{
-        innerPadding -> NavHost(
+    val clientApplicationViewModel = ClientApplicationViewModel(serverUrl)
+    val carList by clientApplicationViewModel.carListState.collectAsState()
+    Scaffold { innerPadding ->
+        NavHost(
             navController = navController,
             startDestination = CarList,
             modifier = Modifier
@@ -59,11 +58,11 @@ fun ClientApp(navController: NavHostController = rememberNavController()){
                 .padding(innerPadding)
         ) {
             composable<CarList> {
-                CarListScreen(carList) { car -> navController.navigate(CarView(car)) }
+                CarListScreen(clientApplicationViewModel) { car -> navController.navigate(CarView(car)) }
             }
-            composable<CarView>{
-                val carVuid : String = it.toRoute<CarView>().vuid
-                val car : Car = carList.find { car -> car.vuid == carVuid }!!
+            composable<CarView> {
+                val carVuid: String = it.toRoute<CarView>().vuid
+                val car: Car = carList.find { car -> car.vuid == carVuid }!!
                 CarViewScreen(car) { navController.navigateUp() }
             }
         }

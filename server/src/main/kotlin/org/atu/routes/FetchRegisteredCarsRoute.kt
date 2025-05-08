@@ -19,7 +19,7 @@ import org.atu.carJsonSerializer
  *
  */
 fun Routing.fetchRegisteredCarsRoute(carMap: MutableMap<String, Pair<Car, RsaKeyPair>>) {
-    get("/fetchAvailableCars") {
+    get("/fetchRegisteredCars") {
         try {
             // TODO() add as a call back on car session requested
             var jsonCarArray = ""

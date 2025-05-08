@@ -23,7 +23,7 @@ class FetchRegisteredCarsTest {
     /**
      * Test Car Fetch Registered Cars happy path
      *
-     * Test that client sends a get request to /fetchAvailableCars and
+     * Test that client sends a get request to /fetchRegisteredCars and
      * receives a json list of registered cars
      *
      */
@@ -42,7 +42,7 @@ class FetchRegisteredCarsTest {
                 }.status,
                 HttpStatusCode.OK,
             )
-            val response = client.get("/fetchAvailableCars")
+            val response = client.get("/fetchRegisteredCars")
             val carFromJsonArray = jsonCarParser(response.bodyAsText().drop(1).dropLast(1))
             assertEquals(carFromJsonArray.vuid, testCar.vuid)
             assertEquals(carFromJsonArray.availability, testCar.availability)
@@ -54,7 +54,7 @@ class FetchRegisteredCarsTest {
     /**
      * Test Car Fetch Registered Cars happy path
      *
-     * Test that client sends a get request to /fetchAvailableCars and without any registered car
+     * Test that client sends a get request to /fetchRegisteredCars and without any registered car
      * receives a json empty list
      *
      */
@@ -64,7 +64,7 @@ class FetchRegisteredCarsTest {
             application {
                 module()
             }
-            val response = client.get("/fetchAvailableCars")
+            val response = client.get("/fetchRegisteredCars")
             assertEquals(response.bodyAsText(), "[]")
         }
     }
