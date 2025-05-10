@@ -10,10 +10,10 @@ import io.ktor.server.routing.Routing
 import io.ktor.server.routing.get
 import org.atu.Car
 import org.atu.RsaKeyPair
-import org.atu.sse.userSessionRequest
 import java.security.interfaces.RSAPrivateKey
 import java.security.interfaces.RSAPublicKey
 import java.util.Date
+import java.util.concurrent.ConcurrentHashMap
 
 /**
  * Http route for client to request a car session
@@ -24,7 +24,7 @@ import java.util.Date
  * @param carMap internal state of registered cars
  *
  */
-fun Routing.sessionRequestRoute(carMap: MutableMap<String, Pair<Car, RsaKeyPair>>) {
+fun Routing.sessionRequestRoute(carMap: ConcurrentHashMap<String, Pair<Car, RsaKeyPair>>) {
     get("/requestSession") {
         val vuid = call.queryParameters["vuid"]
         if (vuid == null) {
@@ -46,7 +46,7 @@ fun Routing.sessionRequestRoute(carMap: MutableMap<String, Pair<Car, RsaKeyPair>
                 text = jwt,
             )
             // TODO() add as a call back on car session requested
-            userSessionRequest()
+            // TODO() Terminate websocket
         } catch (ex: IllegalArgumentException) {
             call.respond(HttpStatusCode.BadRequest)
         }

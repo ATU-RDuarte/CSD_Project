@@ -5,11 +5,16 @@ import io.ktor.server.application.install
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import io.ktor.server.routing.routing
-import io.ktor.server.sse.SSE
+import io.ktor.server.websocket.WebSockets
+import io.ktor.server.websocket.pingPeriod
+import org.atu.routes.carStatusRoute
 import org.atu.routes.endSessionRequestRoute
 import org.atu.routes.fetchRegisteredCarsRoute
 import org.atu.routes.registerCar
 import org.atu.routes.sessionRequestRoute
+import org.atu.websockets.userCarSessionWebSocket
+import java.util.concurrent.ConcurrentHashMap
+import kotlin.time.Duration.Companion.seconds
 
 fun main() {
     embeddedServer(Netty, port = SERVER_PORT, module = Application::module)
@@ -23,13 +28,27 @@ fun main() {
  *
  */
 fun Application.module() {
-    install(SSE)
+    install(WebSockets) {
+        pingPeriod = 15.seconds
+        maxFrameSize = Long.MAX_VALUE
+        masking = false
+    }
     // TODO Store into database and fetch from db
-    val carMap: MutableMap<String, Pair<Car, RsaKeyPair>> = mutableMapOf()
+    val carMap = ConcurrentHashMap<String, Pair<Car, RsaKeyPair>>()
     routing {
         registerCar(carMap)
         fetchRegisteredCarsRoute(carMap)
         sessionRequestRoute(carMap)
         endSessionRequestRoute(carMap)
+        carStatusRoute(carMap)
+        userCarSessionWebSocket(carMap)
     }
+//    CoroutineScope(Dispatchers.Unconfined).launch {
+//        while (true) {
+//            log.info("Sending message to sockets")
+//            for (ws in ServerState.webSocketSessions) {
+//                ws.outgoing.send(Frame.Text("Hello from server ..."))
+//            }
+//        }
+//    }
 }

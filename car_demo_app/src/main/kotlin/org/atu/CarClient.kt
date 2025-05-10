@@ -7,8 +7,6 @@ import io.ktor.client.plugins.logging.DEFAULT
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
-import io.ktor.client.plugins.sse.SSE
-import io.ktor.client.plugins.sse.sse
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.bodyAsText
@@ -37,10 +35,6 @@ class CarClient(
                     request.url.host.contains("ktor.io")
                 }
                 sanitizeHeader { header -> header == HttpHeaders.Authorization }
-            }
-            install(SSE) {
-                showCommentEvents()
-                showRetryEvents()
             }
         }
 
@@ -71,19 +65,19 @@ class CarClient(
         }
     }
 
-    suspend fun subscribeToSessionEvents(): Boolean {
-        try {
-            client.sse(urlString = "$SERVER_URL/userSessionRequest?vuid=${carStatus.vuid}") {
-                incoming.collect { event ->
-                    println("Event from server:")
-                    println(event)
-                    return@collect
+    suspend fun updateCarStatus(): HttpStatusCode {
+        return try {
+            client.post("$SERVER_URL/carStatus") {
+                url {
+                    parameters.append("vuid", carStatus.vuid)
                 }
-            }
+                setBody(
+                    carJsonSerializer(carStatus),
+                )
+            }.status
         } catch (e: Exception) {
-            return false
+            HttpStatusCode.BadGateway
         }
-        return true
     }
 
     fun getCarStatus() = carStatus

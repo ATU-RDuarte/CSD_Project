@@ -11,6 +11,7 @@ import org.atu.Car
 import org.atu.RsaKeyHelper
 import org.atu.RsaKeyPair
 import org.atu.jsonCarParser
+import java.util.concurrent.ConcurrentHashMap
 
 /**
  * Http route for a car to request register
@@ -21,7 +22,7 @@ import org.atu.jsonCarParser
  * @param carMap internal state of registered cars
  *
  */
-fun Routing.registerCar(carMap: MutableMap<String, Pair<Car, RsaKeyPair>>) {
+fun Routing.registerCar(carMap: ConcurrentHashMap<String, Pair<Car, RsaKeyPair>>) {
     post("/car/register") {
         val vuid = call.queryParameters["vuid"]
         if (vuid == null) {
