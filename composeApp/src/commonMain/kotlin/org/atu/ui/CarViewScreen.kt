@@ -29,7 +29,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
  */
 @Preview
 @Composable
-fun CarViewScreen(car: Car, goBackAction: () -> Unit) {
+fun CarViewScreen(car: Car, onRequestSessionClicked: () -> Unit , goBackAction: () -> Unit) {
     Scaffold {
         Column(
             Modifier.fillMaxWidth().fillMaxHeight(),
@@ -62,8 +62,7 @@ fun CarViewScreen(car: Car, goBackAction: () -> Unit) {
                 horizontalArrangement = Arrangement.Center,
             ){
                 Button(
-
-                    onClick = {}
+                    onClick = onRequestSessionClicked
                 ){ Text("Request Session", fontWeight = FontWeight.W800)}
             }
         }

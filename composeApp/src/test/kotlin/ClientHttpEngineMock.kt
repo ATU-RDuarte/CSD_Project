@@ -22,7 +22,12 @@ object ClientMockHttpEngine {
                 HttpMethod.Get -> {
                     if (request.url.fullPath.contains("/fetchRegisteredCars")) {
                         respond(carListToJson(carMap.values.toMap().keys.toList()), HttpStatusCode.OK)
-                    } else {
+                    }
+                    else if(request.url.fullPath.contains("/requestSession?vuid")) {
+                        val vuid = request.url.fullPath.substring(request.url.fullPath.indexOf("=")+1)
+                        respond(carMap[vuid]!!.second.toString(), HttpStatusCode.OK)
+                    }
+                    else {
                         respond("", HttpStatusCode.BadRequest)
                     }
                 }

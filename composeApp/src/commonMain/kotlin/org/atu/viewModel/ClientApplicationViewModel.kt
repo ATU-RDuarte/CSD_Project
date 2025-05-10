@@ -24,6 +24,20 @@ class ClientApplicationViewModel(serverUrl: String) : ViewModel() {
     private val _carListState = MutableStateFlow(listOf<Car>())
     val carListState = _carListState.asStateFlow()
 
+    private val _carSessionStatus = MutableStateFlow(false)
+    val carSessionStatus = _carSessionStatus.asStateFlow()
+
+    fun setCarSessionStatus(isSessionActive: Boolean) {
+        _carSessionStatus.value = isSessionActive
+    }
+
+    private val _lastCarStatus = MutableStateFlow("")
+    val lastCarStatus = _lastCarStatus.asStateFlow()
+
+    fun setLastCarStatus(status: String) {
+        _lastCarStatus.value = status
+    }
+
     init {
         CoroutineScope(Dispatchers.Main).launch {
             while (true) {

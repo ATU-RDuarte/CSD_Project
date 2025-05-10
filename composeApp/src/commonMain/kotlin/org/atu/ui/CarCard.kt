@@ -47,7 +47,7 @@ fun CarCard(car: Car, onCardClick: (String) -> Unit) {
             Modifier
                 .fillMaxWidth()
                 .padding(10.dp)
-                .height(100.dp)
+                .height(120.dp)
                 .clickable(car.availability == CarAvailability.Available, onClick =  { onCardClick(car.vuid) }),
     ) {
         Column(Modifier.fillMaxWidth().padding(10.dp), horizontalAlignment = Alignment.End) {
