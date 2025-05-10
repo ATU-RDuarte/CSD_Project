@@ -1,4 +1,4 @@
-package org.atu
+package http
 
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
@@ -7,11 +7,17 @@ import io.ktor.client.plugins.logging.DEFAULT
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
+import io.ktor.client.plugins.websocket.WebSockets
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
+import org.atu.Car
+import org.atu.RsaKeyHelper
+import org.atu.SERVER_URL
+import org.atu.carBuilder
+import org.atu.carJsonSerializer
 import java.security.interfaces.RSAPublicKey
 
 /**
@@ -25,6 +31,7 @@ class CarClient(
     private val carStatus: Car = carBuilder(),
 ) {
     private lateinit var currentPublicKey: RSAPublicKey
+    var doorLocked = true
     private val client: HttpClient =
         HttpClient(httpClientEngine) {
             expectSuccess = true
@@ -35,6 +42,9 @@ class CarClient(
                     request.url.host.contains("ktor.io")
                 }
                 sanitizeHeader { header -> header == HttpHeaders.Authorization }
+            }
+            install(WebSockets) {
+                pingIntervalMillis = 20_000
             }
         }
 
@@ -79,6 +89,8 @@ class CarClient(
             HttpStatusCode.BadGateway
         }
     }
+
+    fun getHttpClient() = client
 
     fun getCarStatus() = carStatus
 }

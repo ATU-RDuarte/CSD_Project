@@ -22,13 +22,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
-import org.atu.http.UserSocketSession
 import org.atu.viewModel.ClientApplicationViewModel
-import org.atu.websocket.WebSocketMessage
+import org.atu.websockets.UserSocketSession
+import org.atu.websockets.WebSocketMessage
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 /***
@@ -156,6 +155,7 @@ fun SessionScreen(
                 Button(
                     onClick = {
                         CoroutineScope(Dispatchers.Main).launch { socket.closeSession() }
+                        viewModel.setCarSessionStatus(false)
                         endSessionAction()
                     }
                 ) { Text("End Session", fontWeight = FontWeight.W800) }

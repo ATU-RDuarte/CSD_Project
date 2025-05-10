@@ -1,4 +1,4 @@
-package org.atu.websocket
+package org.atu.websockets
 
 import kotlinx.serialization.Serializable
 

@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.kotlinJvm)
     alias(libs.plugins.ktlint)
     alias(libs.plugins.ktor)
+    alias(libs.plugins.serialize)
     application
 }
 
@@ -21,6 +22,7 @@ dependencies {
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.cio)
     implementation(libs.ktor.client.logging)
+    implementation(libs.kotlinx.serialization.json)
     testImplementation(libs.kotlin.test.junit)
     testImplementation(libs.ktor.client.mock)
     testImplementation(libs.kotlinx.coroutines.test)
