@@ -12,7 +12,7 @@ import kotlinx.serialization.json.Json
 import org.atu.carBuilder
 import org.atu.carJsonSerializer
 import org.atu.module
-import org.atu.websocket.WebSocketMessage
+import org.atu.websockets.WebSocketMessage
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull

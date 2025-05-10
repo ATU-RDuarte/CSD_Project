@@ -1,5 +1,6 @@
 package org.atu
 
+import http.CarClient
 import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.runBlocking
 import kotlin.test.Test

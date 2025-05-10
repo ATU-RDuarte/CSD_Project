@@ -14,7 +14,6 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
 import org.atu.Car
-import org.atu.http.UserSocketSession
 import org.atu.viewModel.ClientApplicationViewModel
 
 /**
