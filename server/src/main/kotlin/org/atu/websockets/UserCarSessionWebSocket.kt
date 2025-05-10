@@ -53,7 +53,6 @@ fun Route.userCarSessionWebSocket(carMap: ConcurrentHashMap<String, Pair<Car, Rs
                 ),
             )
         }
-
         ServerSessionState.carSessionMap[entity] = this
         try {
             incoming.consumeEach { frame ->

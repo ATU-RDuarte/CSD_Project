@@ -43,12 +43,4 @@ fun Application.module() {
         carStatusRoute(carMap)
         userCarSessionWebSocket(carMap)
     }
-//    CoroutineScope(Dispatchers.Unconfined).launch {
-//        while (true) {
-//            log.info("Sending message to sockets")
-//            for (ws in ServerState.webSocketSessions) {
-//                ws.outgoing.send(Frame.Text("Hello from server ..."))
-//            }
-//        }
-//    }
 }

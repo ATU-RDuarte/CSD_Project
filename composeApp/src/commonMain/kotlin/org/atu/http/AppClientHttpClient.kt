@@ -6,6 +6,7 @@ import io.ktor.client.plugins.logging.DEFAULT
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
+import io.ktor.client.plugins.websocket.WebSockets
 import io.ktor.client.request.get
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpHeaders
@@ -34,6 +35,9 @@ class AppClientHttpClient(private val serverUrl: String, httpClientEngine: HttpC
                 }
                 sanitizeHeader { header -> header == HttpHeaders.Authorization }
             }
+            install(WebSockets) {
+                pingIntervalMillis = 20_000
+            }
         }
 
     suspend fun fetchForAvailableCars(): List<Car> {
@@ -53,4 +57,22 @@ class AppClientHttpClient(private val serverUrl: String, httpClientEngine: HttpC
             return listOf()
         }
     }
+
+    suspend fun requestCarSession(vuid: String) : String {
+        try {
+            val response = client.get("$serverUrl/requestSession?vuid=$vuid")
+            println("Requested session for cars $vuid")
+            if (response.status != HttpStatusCode.OK) {
+                println("Request failed with error ${response.status}")
+                return ""
+            }
+            return response.bodyAsText()
+        } catch (e: Exception) {
+            println("Caught exception ${e.message}")
+            return ""
+        }
+    }
+
+    fun getWebSocketUrl() = serverUrl.replace("http", "ws")
+    fun getHttpClient() = client
 }

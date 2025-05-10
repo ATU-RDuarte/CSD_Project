@@ -14,6 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
 import org.atu.Car
+import org.atu.http.UserSocketSession
 import org.atu.viewModel.ClientApplicationViewModel
 
 /**
@@ -35,6 +36,10 @@ object CarList
  */
 @Serializable
 data class CarView(val vuid: String)
+
+
+@Serializable
+data class Session(val vuid: String)
 
 /**
  * ClientApp class for UI module
@@ -63,7 +68,11 @@ fun ClientApp(serverUrl: String, navController: NavHostController = rememberNavC
             composable<CarView> {
                 val carVuid: String = it.toRoute<CarView>().vuid
                 val car: Car = carList.find { car -> car.vuid == carVuid }!!
-                CarViewScreen(car) { navController.navigateUp() }
+                CarViewScreen(car, { navController.navigate(Session(carVuid)) }, { navController.navigateUp() })
+            }
+            composable<Session> {
+                val carVuid: String = it.toRoute<Session>().vuid
+                SessionScreen(carVuid, clientApplicationViewModel){ navController.navigate(CarList) }
             }
         }
     }
