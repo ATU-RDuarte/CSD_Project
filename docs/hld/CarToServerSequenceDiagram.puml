@@ -5,9 +5,10 @@ alt if Car Registered
 Server --> Car: Return Error
 else
 Server --> Car: Return Car Public Key
+Server --> Server: Store Car Private Key
 end
 
-loop Car Update Sequence
+loop Car Update Sequence 1s
 Car --> Server : Start Status Update Routine
 end
 

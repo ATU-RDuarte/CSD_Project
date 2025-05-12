@@ -1,0 +1,40 @@
+@startuml
+
+annotation Serializable
+
+class Car {
+    + vuid: String
+    + availability: CarAvailability
+    + fuel: Float
+    + price: Float
+}
+
+enum CarAvailability {
+    Available,
+    Unavailable
+}
+
+Car -up-> CarAvailability
+
+object CarBuilder {
+    + carBuilder(String, CarAvailability, Float, Float) : Car
+    + carJsonSerializer(Car) : String
+    + jsonCarParser(String) : Car
+}
+
+CarBuilder --> Car
+
+class RsaKeyPair {
+    + privateKey: PrivateKey
+    + publicKey: PublicKey
+}
+
+object RsaKeyHelper {
+    + generateRsaKeyPair() : RsaKeyPair
+    + publicKeyPemFormat(PublicKey) : String
+    + pemToRsaPublicKey(String) : RSAPublicKey
+}
+
+RsaKeyHelper --> RsaKeyPair
+
+@enduml

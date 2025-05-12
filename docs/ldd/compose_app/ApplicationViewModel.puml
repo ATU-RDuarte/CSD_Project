@@ -1,0 +1,21 @@
+@startuml
+
+abstract ViewModel
+
+class ClientApplicationViewModel {
+    + httpClient : AppClientHttpClient
+    - _carListState : MutableStateFlow(List<Car>)
+    - _carSessionStatus : MutableStateFlow(Bool)
+    - _lastCarStatus : MutableStateFlow(String)
+
+    + carListState : StateFlow(List<Car>)
+    + carSessionStatus : StateFlow(Bool)
+    + lastCarStatus = StateFlow(String)
+
+    + setCarSessionStatus(Boolean)
+    + setLastCarStatus(String)
+}
+
+ClientApplicationViewModel -up-|> ViewModel
+
+@enduml

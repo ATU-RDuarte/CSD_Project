@@ -1,4 +1,5 @@
 @startuml
+
 Client -> Server : Request Session with VUID
 
 alt Cannot Request Session
@@ -6,38 +7,25 @@ alt Cannot Request Session
 else
     Server -> Client : Respond With Car JWT
 end
-Client -> Car: Requests Session With JWT
-Car -> Car: Validates JWT Signature Against Public Key
 
-alt Signature Is Valid
-    Car -> Client : Allow Session With Client
-    Car -> Server : Update unavailability
-else
-    Car -> Client : Close WebSocket
-end
+loop UserCar Session WebSocket
 
 group Car Session With Client
-   Client -> Car : Request To Unlock Door
-   alt if Car Door Is Locked
-        Car -> Car : Unlock Door
-        Car -> Client : Respond With Success
+   Client -> Car : Request To Car With JWT
+   Car -> Car :  Validate JWT signature against public key
+   alt signature is invalid
+    Car -> Client : Respond Not Ok
    else
-        Car -> Client : Respond With Error Message
+    Car -> Client : Respond To Request
    end
-  Client -> Car : Request To Lock Door
-  alt if Car Door Is Unlocked
-       Car -> Car : Lock Door
-       Car -> Client : Respond With Success
-  else
-       Car -> Client : Respond With Error Message
-  end
+   alt Client Ends Session
+    Client -> Server : Close WebSocket
+    Client -> Server: Request Session Report
+    Server -> Server : Process Session Report
+    Server -> Client : Respond With Session Report
+   end
+end
 
-  alt if Client Request End Session
-    Client -> Car : Request End Session
-    Car -> Client : Send End Session With Report
-    Car -> Car: End WebSocket
-    Server -> Client : Send Session Report
-  end
 end
 
 @enduml

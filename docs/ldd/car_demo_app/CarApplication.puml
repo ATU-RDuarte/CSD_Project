@@ -1,18 +1,24 @@
 @startuml
 'https://plantuml.com/class-diagram
 
-class CarApplication
+object CarApplication {
+    + main() : Unit
+}
+
+class CarClient
 {
-+ run()
-- registerCar() : Result
-- unregisterCar() : Result
-- onCarLocked() : Unit
-- onCarUnlocked() : Unit
-- mVuid : String
-- mHttpClient : HttpClient
++ registerCar() : HttpStatusCode
++ unregisterCar() : HttpStatusCode
++ updateCarStatus() : HttpStatusCode
++ getCarStatus() : Car
++ getHttpClient() : HttpClient
+- carStatus : Car
+- httpClient : HttpClient
 }
 
 class HttpClient
 
-CarApplication --> HttpClient
+CarClient --> HttpClient
+CarApplication --> CarClient
+
 @enduml
