@@ -5,4 +5,46 @@ class Application
 + App() : MaterialApp
 }
 
+annotation Composable
+
+object ClientApp {
+    + serverUrl : String
+    + navController : NavigationController
+}
+
+object GoBackButton {
+    + goBackAction : Func
+}
+
+object SessionScreen {
+    + carVuid : String
+    + viewModel : ClientApplicationViewModel
+    + endSessionAction : Func
+}
+
+object CarViewScreen {
+    + car : Car
+    + onRequestSessionClicked : Func
+    + goBackAction : Func
+}
+
+object CarListScreen {
+    + clientApplicationViewModel: ClientApplicationViewModel
+    + carCardOnClickAction: Func(String)
+}
+
+object CarCard {
+    + car : Car
+    + onCardClick: Func(String)
+}
+
+
+Application -up-* ClientApp
+Application --* GoBackButton
+Application --* SessionScreen
+Application -right-* CarViewScreen
+Application -left-* CarListScreen
+Application -down-* CarCard
+
+
 @enduml

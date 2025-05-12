@@ -45,6 +45,7 @@ data class Session(val vuid: String)
  *
  * This class is the main app screen tht lists all available cars and handles screen navigation
  *
+ * @param serverUrl url to connect to server
  * @param navController compose navigation handler
  *
  */

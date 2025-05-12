@@ -1,0 +1,26 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+object SessionState {
+    ConcurrentHashMap<String, WebSocketSession>()
+}
+
+object Application {
+    + module()
+    + main()
+    + routing :  RoutingRoot
+}
+
+object RoutingRoot {
+    + carStatusRoute(ConcurrentHashMap<String, Pair<Car, RsaPubKey>>)
+    + endSessionRequestRoute(ConcurrentHashMap<String, Pair<Car, RsaPubKey>>)
+    + fetchRegisteredCarRoute(ConcurrentHashMap<String, Pair<Car, RsaPubKey>>)
+    + registerCarRoute(ConcurrentHashMap<String, Pair<Car, RsaPubKey>>)
+    + sessionRequestRoute(ConcurrentHashMap<String, Pair<Car, RsaPubKey>>)
+    + userCarSessionWebSocket(ConcurrentHashMap<String, Pair<Car, RsaPubKey>>)
+}
+
+Application -up-* RoutingRoot
+RoutingRoot -down-o SessionState
+
+@enduml

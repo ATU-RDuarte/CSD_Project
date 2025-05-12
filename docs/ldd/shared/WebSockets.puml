@@ -1,0 +1,21 @@
+@startuml
+
+annotation Serializable
+
+class WebSocketMessage
+{
+    + receiver: String
+    + payload: String
+}
+
+class UserSocketSession {
+    - httpClient : HttpClient
+    - socket : SocketSession
+    + initSocket(String) : Bool
+    + isSocketConnected() : Bool
+    + sendMessage(String) : Bool
+    + receiveMessage() : String?
+    + closeSession()
+}
+
+@enduml
