@@ -47,7 +47,8 @@ jobs:
           java-version: 17
           cache: gradle
       - name: Building Release Client Application for ${{ matrix.os }}
-        run: ./gradlew packageReleaseDistributionForCurrentOS
+        # Actual release job not working
+        run: ./gradlew packageDistributionForCurrentOS
       - name: Upload Desktop Client
         uses: actions/upload-artifact@v4
         with:
