@@ -1,0 +1,33 @@
+name: Auto Pull Request
+run-name: Auto PR
+
+on:
+  push:
+    branches-ignore:
+      - master
+
+jobs:
+  createPR:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          delete-branch: true
+          branch: ${{ github.ref }}
+          base: main
+          title: 'feat: TO BE UPDATED BY PR OWNER'
+          body: |
+            COMMIT MESSAGE HEADER
+            - EXAMPLE CHANGE
+            
+            Jira Issue:
+          labels: |
+            fix_auto_generated_text
+            automated pr
+          assignees: ${{ github.actor }}
+          draft: true
