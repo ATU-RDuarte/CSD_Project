@@ -1,11 +1,24 @@
-name: CodeAnalysis
+name: Run Code Analysis
+run-name: Running Build
+
 on:
   pull_request:
     branches:
       - main
 
 jobs:
-  analyze:
+  GitLeakCheck:
+    name: GitLeaks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
+  CodeAnalysis:
     name: Analyze Kotlin Code
     runs-on: ubuntu-latest
     permissions:
