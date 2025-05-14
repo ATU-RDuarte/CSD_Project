@@ -94,7 +94,7 @@ compose.desktop {
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "org.atu"
+            packageName = "org.atu.csd"
             packageVersion = "1.0.0"
         }
     }
