@@ -1,4 +1,4 @@
-name: Lint
+name: CodeAnalysis
 run-name: Running Lint
 on:
   workflow_call:

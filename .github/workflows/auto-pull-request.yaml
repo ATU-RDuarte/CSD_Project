@@ -4,7 +4,7 @@ run-name: Auto PR
 on:
   push:
     branches-ignore:
-      - master
+      - main
 
 jobs:
   createPR:
@@ -22,12 +22,12 @@ jobs:
           base: main
           title: 'feat: TO BE UPDATED BY PR OWNER'
           body: |
-            COMMIT MESSAGE HEADER
-            - EXAMPLE CHANGE
+            ${{ github.event.head_commit.message }}
             
             Jira Issue:
           labels: |
             fix_auto_generated_text
+            add_jira_issue
             automated pr
           assignees: ${{ github.actor }}
           draft: true
