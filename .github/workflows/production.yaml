@@ -2,28 +2,37 @@ name: Production
 run-name: Release Jobs
 
 on:
-  push:
-    tags:
-      - v*.*.*
+  workflow_run:
+    workflows: [Pre-Production]
+    types: [completed]
+    branches:
+      - main
+env:
+  # Setting an environment variable with the value of a configuration variable
+  env_var: ${{ vars.ENV_CONTEXT_VAR }}
 
 jobs:
   DownloadAndRelease:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, macos-latest, windows-latest ]
     steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/download-artifact@v4
         with:
-          name: release-artifact.tar
-          pattern: |
-           server-car-artifact
-           desktop-client-*
+          name: | 
+            desktop-client-${{ matrix.os }}
+            server-car-artifact
+            android-client
           merge-multiple: true
       - name: Create Release
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-          tag: ${{ github.ref_name }}
         run: |
-          gh release create "$tag" \
+          gh release create $(git describe --tags $(git rev-list --tags --max-count=1)) \
               --repo="$GITHUB_REPOSITORY" \
-              --generate-notes
+              --generate-notes \
               --draft
-              --notes-from-tag
