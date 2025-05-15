@@ -2,9 +2,11 @@ name: Production
 run-name: Release Jobs
 
 on:
-  push:
-    tags:
-      - v*.*.*
+  workflow_run:
+    workflows: [Pre-Production]
+    types: [completed]
+    branches:
+      - main
 
 jobs:
   DownloadAndRelease:
