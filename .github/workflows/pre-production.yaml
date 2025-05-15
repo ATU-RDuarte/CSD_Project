@@ -1,4 +1,4 @@
-name: Pre Production
+name: Pre-Production
 
 on:
   push:
@@ -54,7 +54,7 @@ jobs:
         with:
           name: desktop-client-${{ matrix.os }}
           path: |
-            */**/org.atu.csd_1.0.0_amd64.*
+            composeApp/build/compose/binaries/main/
 
   BuildKtorJar:
     runs-on: ubuntu-latest
