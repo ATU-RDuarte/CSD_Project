@@ -1,4 +1,4 @@
-name: Pre Production
+name: Pre-Production
 
 on:
   push:
