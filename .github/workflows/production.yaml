@@ -1,0 +1,29 @@
+name: Production
+run-name: Release Jobs
+
+on:
+  push:
+    tags:
+      - v*.*.*
+
+jobs:
+  DownloadAndRelease:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-artifact.tar
+          pattern: |
+           server-car-artifact
+           desktop-client-*
+          merge-multiple: true
+      - name: Create Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          tag: ${{ github.ref_name }}
+        run: |
+          gh release create "$tag" \
+              --repo="$GITHUB_REPOSITORY" \
+              --generate-notes
+              --draft
+              --notes-from-tag
