@@ -2,17 +2,19 @@ name: Production
 run-name: Release Jobs
 
 on:
-  push:
-    tags:
-      - v*.*.*
+  workflow_run:
+    workflows: [Pre-Production]
+    types: [completed]
+    branches:
+      - main
 
 jobs:
   DownloadAndRelease:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
-          name: release-artifact.tar
           pattern: |
            server-car-artifact
            desktop-client-*
@@ -20,9 +22,9 @@ jobs:
       - name: Create Release
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-          tag: ${{ github.ref_name }}
         run: |
-          gh release create "$tag" \
+          TAG=$(git describe --tags $(git rev-list --tags --max-count=1))
+          gh release create "$TAG" \
               --repo="$GITHUB_REPOSITORY" \
               --generate-notes
               --draft
