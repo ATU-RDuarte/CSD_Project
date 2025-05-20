@@ -25,10 +25,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
+import org.atu.RsaKeyHelper.base64ToBytes
+import org.atu.createSelfSignedJwt
 import org.atu.viewModel.ClientApplicationViewModel
 import org.atu.websockets.UserSocketSession
 import org.atu.websockets.WebSocketMessage
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import java.security.KeyFactory
+import java.security.interfaces.RSAPrivateKey
+import java.security.spec.PKCS8EncodedKeySpec
 
 /***
  * Function responsible to send request to car
@@ -82,10 +87,15 @@ fun SessionScreen(
     val lastCarStatus by viewModel.lastCarStatus.collectAsState()
     val socket = UserSocketSession(viewModel.httpClient.getHttpClient())
     // TODO replace with car key instead
-    var carJwt = ""
+    var carPrivateCar: RSAPrivateKey? = null
     CoroutineScope(Dispatchers.Main).launch {
-        carJwt = viewModel.httpClient.requestCarSession(carVuid)
-        println("Obtained JWT: $carJwt")
+        val base64EncodedCarPrivateKey = viewModel.httpClient.requestCarSession(carVuid)
+        println("Obtained JWT: $base64EncodedCarPrivateKey")
+        carPrivateCar = KeyFactory.getInstance("RSA").generatePrivate(
+            PKCS8EncodedKeySpec(
+                base64ToBytes(base64EncodedCarPrivateKey)
+            )
+        ) as RSAPrivateKey
     }
     CoroutineScope(Dispatchers.Main).launch {
         val url = "${viewModel.httpClient.getWebSocketUrl()}/carSessionChannel/$carVuid?entity=user"
@@ -128,7 +138,15 @@ fun SessionScreen(
                 Button(
                     onClick = {
                         CoroutineScope(Dispatchers.Main).launch {
-                            sendRequestToCar(socket, WebSocketMessage("car", "UNLOCK_CAR"))
+                            sendRequestToCar(
+                                socket,
+                                WebSocketMessage(
+                                    "car",
+                                    createSelfSignedJwt(
+                                        """{"request": "UNLOCK_CAR"}""", carPrivateCar!!
+                                    )
+                                )
+                            )
                             viewModel.setLastCarStatus(receiveResponse(socket))
                         }
                     }
@@ -136,7 +154,16 @@ fun SessionScreen(
                 Button(
                     onClick = {
                         CoroutineScope(Dispatchers.Main).launch {
-                            sendRequestToCar(socket, WebSocketMessage("car", "LOCK_CAR"))
+                            sendRequestToCar(
+                                socket,
+                                WebSocketMessage(
+                                    "car",
+                                    createSelfSignedJwt(
+                                        """{"request": "LOCK_CAR"}""",
+                                        carPrivateCar!!
+                                    )
+                                )
+                            )
                             viewModel.setLastCarStatus(receiveResponse(socket))
                         }
                     }

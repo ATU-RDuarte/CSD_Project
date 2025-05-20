@@ -12,6 +12,8 @@ androidx-lifecycle = "2.8.4"
 androidx-material = "1.12.0"
 androidx-test-junit = "1.2.1"
 compose-multiplatform = "1.7.3"
+guava = "33.4.8-android"
+guavaVersion = "33.4.8-jre"
 junit = "4.13.2"
 kotlin = "2.1.10"
 kotlinx-coroutines = "1.10.1"
@@ -23,6 +25,8 @@ navigationComposeVersion = "2.8.0-alpha10"
 
 
 [libraries]
+guava = { module = "com.google.guava:guava", version.ref = "guava" }
+guava-v3348jre = { module = "com.google.guava:guava", version.ref = "guavaVersion" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
