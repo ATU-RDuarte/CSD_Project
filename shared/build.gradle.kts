@@ -23,7 +23,12 @@ kotlin {
             // put your Multiplatform dependencies here
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.ktor.client.core)
+            implementation(libs.ktor.server.auth)
+            implementation(libs.ktor.server.auth.jwt)
         }
+    }
+    sourceSets.androidUnitTest.dependencies {
+        implementation(kotlin("test"))
     }
 }
 

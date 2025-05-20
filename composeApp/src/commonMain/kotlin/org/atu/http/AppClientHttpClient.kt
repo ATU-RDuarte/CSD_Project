@@ -58,7 +58,7 @@ class AppClientHttpClient(private val serverUrl: String, httpClientEngine: HttpC
         }
     }
 
-    suspend fun requestCarSession(vuid: String) : String {
+    suspend fun requestCarSession(vuid: String): String {
         try {
             val response = client.get("$serverUrl/requestSession?vuid=$vuid")
             println("Requested session for cars $vuid")
@@ -66,7 +66,10 @@ class AppClientHttpClient(private val serverUrl: String, httpClientEngine: HttpC
                 println("Request failed with error ${response.status}")
                 return ""
             }
-            return response.bodyAsText()
+            val base64CarKey =
+                response.bodyAsText().split(":")[1].replace("\"", "").replace(" ", "")
+            println("Base64 encoded key $base64CarKey")
+            return base64CarKey
         } catch (e: Exception) {
             println("Caught exception ${e.message}")
             return ""

@@ -35,4 +35,19 @@ object RsaKeyHelper {
         val kf = KeyFactory.getInstance("RSA")
         return kf.generatePublic(spec) as RSAPublicKey
     }
+
+    @OptIn(ExperimentalEncodingApi::class)
+    fun bytesToBase64(asByteArray: ByteArray): String {
+        return Base64.encode(asByteArray)
+    }
+
+    @OptIn(ExperimentalEncodingApi::class)
+    fun base64ToBytes(asBase64: String): ByteArray {
+        return Base64.decode(asBase64)
+    }
+
+    @OptIn(ExperimentalEncodingApi::class)
+    fun base64UrlToBytes(asBase64Url: String): ByteArray {
+        return Base64.UrlSafe.withPadding(Base64.PaddingOption.ABSENT_OPTIONAL).decode(asBase64Url)
+    }
 }

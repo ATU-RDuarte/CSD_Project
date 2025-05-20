@@ -93,4 +93,6 @@ class CarClient(
     fun getHttpClient() = client
 
     fun getCarStatus() = carStatus
+
+    fun getCurrentPublicKey() = currentPublicKey
 }

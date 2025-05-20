@@ -24,6 +24,7 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+            implementation(libs.guava)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -43,7 +44,7 @@ kotlin {
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.cio)
             implementation(libs.ktor.client.logging)
-
+            implementation(libs.guava.v3348jre)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
