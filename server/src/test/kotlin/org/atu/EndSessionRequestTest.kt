@@ -1,11 +1,10 @@
+package org.atu
+
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.testing.testApplication
-import org.atu.carBuilder
-import org.atu.carJsonSerializer
-import org.atu.module
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -26,7 +25,7 @@ class EndSessionRequestTest {
      *
      */
     @Test
-    fun testSessionRequestHappyPath() {
+    fun testEndSessionRequestHappyPath() {
         testApplication {
             application {
                 module()
@@ -57,7 +56,7 @@ class EndSessionRequestTest {
      *
      */
     @Test
-    fun testSessionRequestNonRegisteredCarHappyPath() {
+    fun testEndSessionRequestNonRegisteredCar() {
         val vuid = "testVuid"
         testApplication {
             application {
@@ -81,7 +80,7 @@ class EndSessionRequestTest {
      *
      */
     @Test
-    fun testSessionRequestTestNoVuidParameter() {
+    fun testEndSessionRequestTestNoVuidParameter() {
         testApplication {
             application {
                 module()
@@ -107,7 +106,7 @@ class EndSessionRequestTest {
      *
      */
     @Test
-    fun testSessionRequestTestInvalidMethod() {
+    fun testEndSessionRequestTestInvalidMethod() {
         testApplication {
             application {
                 module()

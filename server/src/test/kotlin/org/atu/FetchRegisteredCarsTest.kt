@@ -1,13 +1,11 @@
+package org.atu
+
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.testing.testApplication
-import org.atu.carBuilder
-import org.atu.carJsonSerializer
-import org.atu.jsonCarParser
-import org.atu.module
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

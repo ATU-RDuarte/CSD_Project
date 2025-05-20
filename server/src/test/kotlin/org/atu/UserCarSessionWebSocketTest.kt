@@ -1,3 +1,5 @@
+package org.atu
+
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.websocket.WebSockets
 import io.ktor.client.plugins.websocket.webSocket
@@ -9,9 +11,6 @@ import io.ktor.websocket.CloseReason
 import io.ktor.websocket.Frame
 import io.ktor.websocket.readText
 import kotlinx.serialization.json.Json
-import org.atu.carBuilder
-import org.atu.carJsonSerializer
-import org.atu.module
 import org.atu.websockets.WebSocketMessage
 import kotlin.test.Test
 import kotlin.test.assertEquals

@@ -26,4 +26,16 @@ class CarClientTest {
         val response = runBlocking { client.registerCar() }
         assertEquals(response, HttpStatusCode.OK)
     }
+
+    /**
+     * Test Car Http Client Sends Status Update Happy Path
+     *
+     * Test that client attempts to update the server with current status happy path
+     *
+     */
+    @Test
+    fun testCarStatusUpdateHappyPath() {
+        val response = runBlocking { client.updateCarStatus() }
+        assertEquals(response, HttpStatusCode.OK)
+    }
 }
